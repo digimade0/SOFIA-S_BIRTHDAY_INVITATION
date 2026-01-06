@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sofia's 7th Birthday Party!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --barbie-pink: #e0218a;
+            --soft-pink: #ffcce6;
+            --light-pink: #fff0f7;
+            --gold: #ffd700;
+            --sparkle-color: #ff69b4;
+            --messenger-blue: #0084ff;
+        }
+
+        /* Basic Reset */
+        * { box-sizing: border-box; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--soft-pink);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; 
+        }
+
+        /* FULL SCREEN OVERLAY (THE MIRROR) */
+        #mirror-overlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background-color: var(--barbie-pink);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.8s ease-in-out;
+        }
+
+        .mirror-frame {
+            width: 80vw;
+            max-width: 300px;
+            aspect-ratio: 3/4;
+            background: linear-gradient(135deg, #fff 0%, #ffeef8 100%);
+            border: 12px solid var(--gold);
+            border-radius: 150px 150px 30px 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .click-me {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5rem;
+            color: var(--barbie-pink);
+            animation: pulse 1.5s infinite;
+        }
+
+        /* THE INVITATION CARD */
+        .card-container {
+            width: 95%;
+            max-width: 800px;
+            background: white;
+            background-image: repeating-linear-gradient(45deg, var(--light-pink) 25%, transparent 25%, transparent 50%, var(--light-pink) 50%, var(--light-pink) 75%, transparent 75%, transparent 100%);
+            background-size: 40px 40px;
+            border: 8px solid var(--barbie-pink);
+            border-radius: 25px;
+            box-shadow: 0 15px 50px rgba(0,0,0,0.15);
+            display: flex;
+            flex-direction: row; 
+            position: relative;
+            overflow: hidden;
+            padding: 30px;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 1s ease-out;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column; 
+                text-align: center;
+                padding: 20px;
+                overflow-y: auto;
+                max-height: 90vh;
+            }
+        }
+
+        /* Messenger Reply Button Styling */
+        .reply-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: var(--barbie-pink);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(224, 33, 138, 0.4);
+            transition: transform 0.2s, background-color 0.2s;
+            border: 2px solid white;
+        }
+
+        .reply-btn:hover {
+            transform: scale(1.05);
+            background-color: #c21875;
+        }
+
+        /* Falling Sparkles Styling */
+        .falling-star {
+            position: fixed;
+            top: -20px;
+            color: var(--sparkle-color);
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(110vh) rotate(360deg); }
+        }
+
+        .image-box {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        .dolls-img {
+            max-width: 100%;
+            height: auto;
+            filter: drop-shadow(0 10px 10px rgba(0,0,0,0.1));
+        }
+
+        .content-box {
+            flex: 1.2;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+        }
+
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            color: var(--barbie-pink);
+            font-size: clamp(2.2rem, 8vw, 3.8rem);
+            margin: 5px 0;
+        }
+
+        .event-info {
+            width: 100%;
+            font-size: clamp(1rem, 4vw, 1.1rem);
+            color: #333;
+        }
+
+        .detail-row { margin: 12px 0; }
+
+        .label {
+            color: var(--barbie-pink);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            display: block;
+        }
+
+        body.active #mirror-overlay {
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.2);
+        }
+
+        body.active .card-container {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="magicSound" src="https://www.soundjay.com/magic/magic-chime-01.mp3"></audio>
+
+    <div id="mirror-overlay" onclick="revealMagic()">
+        <div class="mirror-frame">
+            <div class="click-me">Click Me!</div>
+        </div>
+        <p style="color: white; margin-top: 25px; font-weight: 600; letter-spacing: 2px;">A MAGICAL SURPRISE AWAITS...</p>
+    </div>
+
+    <div class="card-container">
+        <div class="image-box">
+            <img src="gifbarbie.gif" class="dolls-img" alt="Barbie Characters">
+        </div>
+
+        <div class="content-box">
+            <p style="margin: 0; color: var(--barbie-pink); font-weight: 600; letter-spacing: 2px; font-size: 0.8rem;">PLEASE JOIN US FOR</p>
+            <h1>Sofia's 7th Birthday</h1>
+            
+            <div class="event-info">
+                <div class="detail-row">
+                    <span class="label">When</span>
+                    <strong>Saturday, October 24, 2026</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Time</span>
+                    <strong>2:00 PM - 5:00 PM</strong>
+                </div>
+
+                <div class="detail-row">
+                    <span class="label">Where</span>
+                    <strong>Sofia's Dreamhouse Castle</strong><br>
+                    123 Sparkle Drive, Pink City
+                </div>
+            </div>
+
+            <a href="https://www.facebook.com/kolmikayeee" target="_blank" class="reply-btn">
+                Tap to Chat & Confirm ✨
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function revealMagic() {
+            // Play sound
+            const sound = document.getElementById('magicSound');
+            sound.play();
+
+            // Show the Invitation
+            document.body.classList.add('active');
+            
+            // Start creating falling sparkles
+            setInterval(createSparkle, 150);
+        }
+
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.classList.add('falling-star');
+            const shapes = ['✦', '✧', '★', '☆', '✨', '🌸', '💖'];
+            sparkle.innerText = shapes[Math.floor(Math.random() * shapes.length)];
+            sparkle.style.left = Math.random() * 100 + "vw";
+            sparkle.style.animationDuration = Math.random() * 3 + 2 + "s";
+            sparkle.style.opacity = Math.random() * 0.7 + 0.3;
+            sparkle.style.fontSize = Math.random() * 15 + 12 + "px";
+            document.body.appendChild(sparkle);
+
+            setTimeout(() => { sparkle.remove(); }, 5000);
+        }
+    </script>
+</body>
+</html>
